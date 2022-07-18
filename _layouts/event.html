@@ -2,26 +2,20 @@
 <html lang="en">
 
 {% include head.html %}
+
 <body id="page-top">
-  {% include nav.html %}
-  <section class="bg-primary" id="about">
-    <div class="container" id="about">
-      <div class="row">
-        <div class="col-lg-8 col-lg-offset-2 text-center">
-          <h2 class="section-heading"> {{ page.title }} </h2>              
-        </div>
-      </div>
-    </div>
-  </section>
-  <section style="padding:0px !important">
-    <div class="container">
+  {% include header.html %}
+
+  <section class="no-gutters" id="start">
+    <div class="container1">
+      <h1 class="title-p"> {{ page.title }} </h1>
       <hr class="light">
-      <a target=_blank href="{{ site.github.repository_url }}/edit/{{site.github.source.branch}}/{{ page.path }}">  <i class="fa fa-edit fa-sm"> </i>  </a>
+      </br>
       {{ content }}
     </div>
   </section>
-  
-  {% include contact.html %}
-  {% include scripts.html %}
+  {% include footer.html %}
 </body>
+{% include script.html %}
+
 </html>

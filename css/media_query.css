@@ -958,7 +958,10 @@
   /* body {
         display: none;
     } */
-
+  .no-gutters {
+    font-family: var(--font);
+    padding: 10% 1%;
+  }
   .header {
     overflow: hidden;
     background-color: var(--dark);

@@ -121,7 +121,9 @@
                   </div>
                   <div class="required field">
                     <div class="ui date required">
-                      <label>Date of birth <span style="color: red;">*</span></label>
+                      <label
+                        >Date of birth <span style="color: red">*</span></label
+                      >
                       <input type="date" name="dob" placeholder="dd/mm/yyyy" />
                     </div>
                   </div>
@@ -158,7 +160,10 @@
                 <div class="two fields">
                   <div class="required field">
                     <div class="ui date">
-                      <label>Passport date of issue <span style="color: red;">*</span> </label>
+                      <label
+                        >Passport date of issue
+                        <span style="color: red">*</span>
+                      </label>
                       <input
                         type="date"
                         name="passportIssueDate"
@@ -169,7 +174,10 @@
 
                   <div class="required field">
                     <div class="ui date">
-                      <label>Passport expiry date <span style="color: red;">*</span></label>
+                      <label
+                        >Passport expiry date
+                        <span style="color: red">*</span></label
+                      >
                       <input
                         type="date"
                         name="passportValidityDate"
@@ -199,6 +207,7 @@
                       type="checkbox"
                       name="SA_101_bangalore"
                       id="SA_101_bangalore"
+                      name="meetings"
                     />
                     <label>SA#101</label>
                   </div>
@@ -207,6 +216,7 @@
                       type="checkbox"
                       name="CT_101_bangalore"
                       id="CT_101_bangalore"
+                      name="meetings"
                     />
                     <label>CT#101</label>
                   </div>
@@ -215,6 +225,7 @@
                       type="checkbox"
                       name="RAN_101_bangalore"
                       id="RAN_101_bangalore"
+                      name="meetings"
                     />
                     <label>RAN#101</label>
                   </div>
@@ -223,7 +234,11 @@
                 <div class="three fields">
                   <div class="required field">
                     <label>Select Hotel </label>
-                    <select name="hotelName" class="ui fluid dropdown">
+                    <select
+                      id="hotelName"
+                      name="hotelName"
+                      class="ui fluid search dropdown hotel-name disabled"
+                    >
                       <option value="">Select Hotel</option>
                       <option value="Bengaluru Marriott Hotel">
                         Bengaluru Marriott Hotel
@@ -306,40 +321,128 @@
   </body>
   {% include script.html %}
   <script>
-        $("#address").hide()
-       // sider js
-       const slider = document.getElementById("slider");
-       const images = slider.querySelectorAll("img");
-       let i = 0;
-       setInterval(function () {
-         if (i == 0) {
-           images[i].className = "fade-in-image";
-           // images[i].className = "fade-out-image";
-         } else if (i == images.length) {
-           images[i - 1].className = "fade-out-image";
-           images[0].className = "fade-in-image";
-           i = 0;
-         } else {
-           images[i - 1].className = "fade-out-image";
-           images[i].className = "fade-in-image";
-         }
-         i++;
-       }, 2000);
+    $("#address").hide();
+    // sider js
+    const slider = document.getElementById("slider");
+    const images = slider.querySelectorAll("img");
+    let i = 0;
+    setInterval(function () {
+      if (i == 0) {
+        images[i].className = "fade-in-image";
+        // images[i].className = "fade-out-image";
+      } else if (i == images.length) {
+        images[i - 1].className = "fade-out-image";
+        images[0].className = "fade-in-image";
+        i = 0;
+      } else {
+        images[i - 1].className = "fade-out-image";
+        images[i].className = "fade-in-image";
+      }
+      i++;
+    }, 2000);
 
-       document.getElementById("isPhysicalCopyRequired").addEventListener("change", function(e) {
-         if(e.target.checked){
-           $("#address").show()
-         } else {
-           $("#address").hide()
-         }
-       })
+    document
+      .getElementById("isPhysicalCopyRequired")
+      .addEventListener("change", function (e) {
+        if (e.target.checked) {
+          $("#address").show();
+        } else {
+          $("#address").hide();
+        }
+      });
 
-       document.getElementById("iAgree").addEventListener("change", function(e) {
-         if(e.target.checked){
-           $("#submit").removeClass("disabled")
-         } else {
-           $("#submit").addClass("disabled")
-         }
-       })
+    document.getElementById("iAgree").addEventListener("change", function (e) {
+      if (e.target.checked) {
+        $("#submit").removeClass("disabled");
+      } else {
+        $("#submit").addClass("disabled");
+      }
+    });
+
+    let meetings = [];
+    // let SA_101_bangalore
+    document
+      .getElementById("SA_101_bangalore")
+      .addEventListener("change", function (e) {
+        const index = meetings.indexOf("SA_101_bangalore");
+        const { checked } = e.target;
+        if (checked) {
+          meetings.push("SA_101_bangalore");
+        } else {
+          if (index > -1) {
+            meetings.splice(index, 1);
+          }
+        }
+        handleHotelName(meetings);
+      });
+    // const CT_101_bangalore
+    document
+      .getElementById("CT_101_bangalore")
+      .addEventListener("change", function (e) {
+        const index = meetings.indexOf("CT_101_bangalore");
+        const { checked } = e.target;
+        if (checked) {
+          meetings.push("CT_101_bangalore");
+        } else {
+          if (index > -1) {
+            meetings.splice(index, 1);
+          }
+        }
+        handleHotelName(meetings);
+      });
+    // const RAN_101_bangalore =
+    document
+      .getElementById("RAN_101_bangalore")
+      .addEventListener("change", function (e) {
+        const index = meetings.indexOf("RAN_101_bangalore");
+        const { checked } = e.target;
+        if (checked) {
+          meetings.push("RAN_101_bangalore");
+        } else {
+          if (index > -1) {
+            meetings.splice(index, 1);
+          }
+        }
+        handleHotelName(meetings);
+      });
+
+    function handleHotelName(list) {
+      $('.ui.fluid.search.dropdown.hotel-name').addClass("disabled")
+      const hotelName = document.getElementById("hotelName");
+      // case1: only RAN selected
+      if (list.length === 1 && list.includes("RAN_101_bangalore")) {
+        $('#hotelName').val("Sheraton Grand Bangaluru").trigger('change');
+        return;
+      }
+
+      // case 2 : RAN not selected
+      if (
+        (list.includes("CT_101_bangalore") ||
+          list.includes("SA_101_bangalore")) &&
+        !list.includes("RAN_101_bangalore")
+      ) {
+        hotelName.value = "Bengaluru Marriott Hotel";
+        $('#hotelName').val("Bengaluru Marriott Hotel").trigger('change');
+        return
+      }
+
+      // case 3  RAN and either of SA/CT
+      if (
+        (list.includes("CT_101_bangalore") ||
+          list.includes("SA_101_bangalore")) &&
+        list.includes("RAN_101_bangalore")
+      ) {
+        $('.ui.fluid.dropdown.hotel-name').removeClass("disabled")
+        // $('#hotelName').val("").trigger('change');
+        return
+      }
+
+      // case 4 list empty
+      if(!list.length){
+        // console.log("4444")
+        // $('#hotelName').val("").trigger('change');
+      }
+      //
+    }
   </script>
 </html>

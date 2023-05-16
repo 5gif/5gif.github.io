@@ -86,7 +86,7 @@ if (visaForm) {
     if (RAN_101_bangalore) {
       meetings.push("3GPP RAN#101");
     }
-
+    
     if (
       ![SA_101_bangalore, CT_101_bangalore, RAN_101_bangalore].some(
         (e) => e === true
@@ -123,7 +123,6 @@ if (visaForm) {
       alert("Address is required if physical copy is needed.");
       return false;
     }
-
     const data = {
       email,
       firstName,

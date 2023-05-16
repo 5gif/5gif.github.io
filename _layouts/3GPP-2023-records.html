@@ -80,9 +80,12 @@ https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js
       // Create a new JavaScript Date object based on the timestamp
       // multiplied by 1000 so that the argument is in milliseconds, not seconds.
       var date = moment.unix(obj.createdAt / 1000)///.fromNow();
-
+      var attachmentlink = `https://storage.cloud.google.com/3gpptsg101/invites//${doc}.pdf` //getDownloadURL(pdfref)
       var actiondate = moment.unix(obj.actionDate / 1000)///.fromNow();
       let buttons = ` <h6 class="ui header ${cardtype}">Action Taken :${actiondate.format("lll")}</h6>`;
+      if (recordtype == "approved") {
+        buttons = buttons + `<a target=_none href=${attachmentlink}> <i class="ui icon download pdf"></i> </a>`
+      }
       if (recordtype == undefined) {
         buttons = `
         <button id="spam" data-id="${doc}" class="ui tiny red button">Spam</button>

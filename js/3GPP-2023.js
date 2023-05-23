@@ -37,7 +37,6 @@ async function writeToDB(data) {
               key: newDataRef.key,
               payload,
             };
-
           })
           .catch((error) => {
             errorWrapper.classList.remove("display-none");
@@ -68,6 +67,7 @@ if (visaForm) {
     let title = formData.get("title");
     let notes = formData.get("notes") ? formData.get("notes") : "";
     let contactNumber = formData.get("contactNumber");
+    let birthPlace = formData.get("birthPlace");
     let isPhysicalCopyRequired =
       formData.get("isPhysicalCopyRequired") === "on" ? true : false;
     let SA_101_bangalore =
@@ -86,7 +86,7 @@ if (visaForm) {
     if (RAN_101_bangalore) {
       meetings.push("3GPP RAN#101");
     }
-    
+
     if (
       ![SA_101_bangalore, CT_101_bangalore, RAN_101_bangalore].some(
         (e) => e === true
@@ -113,7 +113,8 @@ if (visaForm) {
       hotelName === "" ||
       meetings === "" ||
       title === "" ||
-      contactNumber === ""
+      contactNumber === "" ||
+      birthPlace === ""
     ) {
       alert("Enter all required fields");
       return false;
@@ -142,7 +143,8 @@ if (visaForm) {
       hotelName,
       meetings,
       title,
-      contactNumber
+      contactNumber,
+      birthPlace
     };
     writeToDB(data);
   });

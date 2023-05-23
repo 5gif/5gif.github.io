@@ -321,6 +321,7 @@ https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js
         tblHead.innerHTML = `<tr>
                             <th>Name</th>
                             <th>Date of birth</th>
+                            <th>Place of birth</th>
                             <th>Nationality</th>
                             <th>Organization Detail</th>
                             <th>Passport number</th>
@@ -340,6 +341,7 @@ https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js
           <tr>
             <td>${obj.title + " " + obj.firstName + " " + obj.lastName}</td>
             <td>${obj.dob}</td>
+            <td>${obj.birthPlace ? obj.birthPlace : ""}</td>
             <td>${obj.nationality}</td>
             <td>${obj.representingName}</td>
             <td>${obj.passportNumber}</td>

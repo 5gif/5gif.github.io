@@ -47,6 +47,8 @@ https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js
   {% include script.html %}
   <script type="module">
     import { getApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+    import { ref as storageref, getStorage, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-storage.js";
+
     import {
       getDatabase,
       ref,
@@ -57,7 +59,7 @@ https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js
       remove,
     } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js";
 
-    function showCards(records, recordtype) {
+    async function showCards(records, recordtype) {
       const container = document.getElementById("record-container");
       container.innerHTML = "";
       let cardtype =
@@ -66,6 +68,8 @@ https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js
           : recordtype == "approved"
           ? "green"
           : "red";
+          
+      const storage = getStorage(getApp())
 
       for (let doc in records) {
         // console.log("doccc", val[doc]);
@@ -86,15 +90,21 @@ https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js
         // Create a new JavaScript Date object based on the timestamp
         // multiplied by 1000 so that the argument is in milliseconds, not seconds.
         var date = moment.unix(obj.createdAt / 1000); ///.fromNow();
-        var attachmentlink = `https://storage.cloud.google.com/3gpptsg101/invites//${doc}.pdf`; //getDownloadURL(pdfref)
-        var actiondate = moment.unix(obj.actionDate / 1000); ///.fromNow();
+       // var attachmentlink = `https://storage.cloud.google.com/3gpptsg101/invites//${doc}.pdf`; //getDownloadURL(pdfref)
+       var attachmentlink = await getDownloadURL(storageref(storage, `gs://3gpptsg101/visa/${doc}.pdf`)).catch(e => {
+        console.log(e)
+      })
+      attachmentlink = attachmentlink || ""
+      console.log("Attachment link for ", doc, attachmentlink)
+
+       var actiondate = moment.unix(obj.actionDate / 1000); ///.fromNow();
         let buttons = ` <h6 class="ui header ${cardtype}">Action Taken :${actiondate.format(
           "lll"
         )}</h6>`;
-        if (recordtype == "approved") {
+        if (recordtype == "approved" && attachmentlink != "" ) {
           buttons =
             buttons +
-            `<a target=_none href=${attachmentlink}> <i class="ui icon download pdf"></i> </a>`;
+            `<a target=_blank href=${attachmentlink}> <i class="ui icon download pdf"></i> </a>`;
         }
         if (recordtype == undefined) {
           buttons = `

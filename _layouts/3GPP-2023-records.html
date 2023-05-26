@@ -56,7 +56,7 @@ https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js
       get,
       remove,
     } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js";
-
+    const LIMIT = 10;
     function showCards(records, recordtype) {
       const container = document.getElementById("record-container");
       container.innerHTML = "";
@@ -150,26 +150,23 @@ https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js
       }
     }
 
-    
-    
     function handleContainerWrapper() {
-      const recordcontainer = document.getElementById("recordcontainer")
-      recordcontainer.innerHTML = ""
+      const recordcontainer = document.getElementById("recordcontainer");
+      recordcontainer.innerHTML = "";
       recordcontainer.className = "ui segment green";
-      let div1 = document.createElement("div")
-      div1.className = "ui label top attached"
-      div1.id = "ribbon"
-      recordcontainer.appendChild(div1)
-      div1.innerHTML = "click above"
-      const div2 = document.createElement("div")
-      div2.className = "ui cards"
-      div2.id = "record-container"
-      recordcontainer.appendChild(div2)
+      let div1 = document.createElement("div");
+      div1.className = "ui label top attached";
+      div1.id = "ribbon";
+      recordcontainer.appendChild(div1);
+      div1.innerHTML = "click above";
+      const div2 = document.createElement("div");
+      div2.className = "ui cards";
+      div2.id = "record-container";
+      recordcontainer.appendChild(div2);
     }
-    
-    
+
     document.getElementById("fetch-approved-btn").onclick = () => {
-      handleContainerWrapper()
+      handleContainerWrapper();
       document.getElementById("ribbon").innerHTML = "Approved";
       const errorWrapper = document.getElementById("fetch-error");
       const defaultApp = getApp();
@@ -196,7 +193,7 @@ https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js
     };
 
     document.getElementById("fetch-incomplete-btn").onclick = () => {
-      handleContainerWrapper()
+      handleContainerWrapper();
       document.getElementById("recordcontainer").className = "ui segment red";
       document.getElementById("ribbon").innerHTML = "Incomplete";
       const errorWrapper = document.getElementById("fetch-error");
@@ -225,7 +222,7 @@ https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js
     };
 
     document.getElementById("fetch-btn").onclick = () => {
-      handleContainerWrapper()
+      handleContainerWrapper();
       document.getElementById("recordcontainer").className = "ui segment blue";
       document.getElementById("ribbon").innerHTML = "Submitted";
       const errorWrapper = document.getElementById("fetch-error");
@@ -258,8 +255,8 @@ https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js
       const approveTarget = e.target.closest("#approve");
       const incompleteTarget = e.target.closest("#incomplete");
       const spamTarget = e.target.closest("#spam");
+      const pageTarget = e.target.closest("#page");
       if (approveTarget || spamTarget || incompleteTarget) {
-        // console.log("in ifffff")
         const target = approveTarget || spamTarget || incompleteTarget;
         const defaultApp = getApp();
         const db = getDatabase(defaultApp);
@@ -302,22 +299,39 @@ https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js
             console.error(error);
           });
       }
+
+      // pagination
+      if (pageTarget) {
+        e.preventDefault();
+        const page = pageTarget.getAttribute("data-id");
+        if (page == 1) window.currentPage = 0;
+        showRecords(page);
+      }
     });
 
-    document.getElementById("fetch-approved-list-btn").onclick = () => {
+    document.getElementById("fetch-approved-list-btn").onclick = async () => {
       const defaultApp = getApp();
       const db = getDatabase(defaultApp);
       const targetDBRef = ref(db, `/3GPPTSG101/approved`);
+      const countDBRef = ref(db, `/3GPPTSG101/stats/approved`);
+      get(countDBRef).then((snapshot) => {
+        window.totalRecordsCount = snapshot.val();
+      });
+
       get(targetDBRef).then((snapshot) => {
-        const records = snapshot.val()
+        const records = snapshot.val();
+        window.records = records;
+        window.currentPage = 0;
         const container = document.getElementById("recordcontainer");
-        container.className = "ui"
+        container.className = "ui";
         container.innerHTML = "";
         const tbl = document.createElement("table");
-        tbl.className = "ui fixed celled table";
+        tbl.className = "ui fixed celled small table";
         container.appendChild(tbl);
         const tblBody = document.createElement("tbody");
+        tblBody.id = "tbody";
         const tblHead = document.createElement("thead");
+        const tblFoot = document.createElement("tfoot");
         tblHead.innerHTML = `<tr>
                             <th>Name</th>
                             <th>Date of birth</th>
@@ -328,31 +342,76 @@ https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js
                             <th>Place of Issue</th>
                             <th>Date of Issue</th>
                             <th>Date of Expiry</th>
-                          </tr>
-                          `;
+                          </tr>`;
+
+        tblFoot.innerHTML = `<tfoot>
+                              <tr><th colspan="9">
+                                <div class="ui small right floated pagination menu">
+                                  ${Array.from(
+                                    Array(
+                                      Math.ceil(
+                                        window.totalRecordsCount / LIMIT
+                                      )
+                                    ).keys()
+                                  ).map(
+                                    (i) =>
+                                      `<a id="page" data-id=${
+                                        i + 1
+                                      } class="item">
+                                      ${i + 1}
+                                    </a>`
+                                  )}  
+                                </div>
+                              </th>
+                            </tr></tfoot>`;
 
         tbl.appendChild(tblHead);
         tbl.appendChild(tblBody);
-
-        for (let doc in records) {
-          const obj = records[doc];
-          let tr = document.createElement("tr");
-          tr.innerHTML = `
-          <tr>
-            <td>${obj.title + " " + obj.firstName + " " + obj.lastName}</td>
-            <td>${obj.dob}</td>
-            <td>${obj.birthPlace ? obj.birthPlace : ""}</td>
-            <td>${obj.nationality}</td>
-            <td>${obj.representingName}</td>
-            <td>${obj.passportNumber}</td>
-            <td>${obj.passportIssuePlace}</td>
-            <td>${obj.passportIssueDate}</td>
-            <td>${obj.passportValidityDate}</td>
-          </tr>`;
-
-          tblBody.appendChild(tr);
-        }
+        tbl.appendChild(tblFoot);
+        showRecords(1);
       });
     };
+
+    function showRecords(page) {
+      const tblBody = document.getElementById("tbody");
+      tblBody.innerHTML = "";
+      const records = window.records;
+      const prevPage = window.currentPage;
+      window.currentPage = page;
+      const nextPage = page;
+      window.count = 0;
+
+      if (records) {
+        for (let doc in records) {
+          window.count = window.count + 1;
+          if (
+            window.count > prevPage * LIMIT &&
+            window.count <= nextPage * LIMIT
+          ) {
+            const obj = records[doc];
+            let tr = document.createElement("tr");
+            tr.innerHTML = `
+                            <tr>
+                              <td>${
+                                obj.title +
+                                " " +
+                                obj.firstName +
+                                " " +
+                                obj.lastName
+                              }</td>
+                              <td>${obj.dob}</td>
+                              <td>${obj.birthPlace ? obj.birthPlace : ""}</td>
+                              <td>${obj.nationality}</td>
+                              <td>${obj.representingName}</td>
+                              <td>${obj.passportNumber}</td>
+                              <td>${obj.passportIssuePlace}</td>
+                              <td>${obj.passportIssueDate}</td>
+                              <td>${obj.passportValidityDate}</td>
+                              </tr>`;
+            tblBody.appendChild(tr);
+          }
+        }
+      }
+    }
   </script>
 </html>

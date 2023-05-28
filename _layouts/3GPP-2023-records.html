@@ -69,7 +69,7 @@ https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js
           ? "green"
           : "red";
           
-      const storage = getStorage(getApp())
+      const storage = getStorage(getApp(),"gs://3gpptsg101")
 
       for (let doc in records) {
         // console.log("doccc", val[doc]);
@@ -91,7 +91,7 @@ https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js
         // multiplied by 1000 so that the argument is in milliseconds, not seconds.
         var date = moment.unix(obj.createdAt / 1000); ///.fromNow();
        // var attachmentlink = `https://storage.cloud.google.com/3gpptsg101/invites//${doc}.pdf`; //getDownloadURL(pdfref)
-       var attachmentlink = await getDownloadURL(storageref(storage, `gs://3gpptsg101/visa/${doc}.pdf`)).catch(e => {
+       var attachmentlink = await getDownloadURL(storageref(storage, `visa${doc}.pdf`)).catch(e => {
         console.log(e)
       })
       attachmentlink = attachmentlink || ""

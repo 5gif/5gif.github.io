@@ -2,7 +2,7 @@
 layout: whitepaper
 title: Creating AI Responsibly
 filepath: ./files/Creating_AI_Responsibly.pdf
-preview: "https://user-images.githubusercontent.com/4603031/196388658-dc2351be-85e3-48ef-86fd-2ac114bd7ac0.png"
+preview: "./images/Creating_AI_Responsibly.png"
 release: Oct,2024
 index: 4
 draft: false

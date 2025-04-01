@@ -28,8 +28,10 @@ implementation at national level. (E.g mmwave implementation at national level)
  
 
 ## Leadership 
+
 - Co-Chairs : [Dr. Punit Rathod](https://www.linkedin.com/in/punitrathod/), Qualcomm
 - Co-Chairs : [Mr. Diwakar Sharma](https://www.linkedin.com/in/diwakar-sharma-aaa7712/), Samsung
+
 --------------------
  
 ## Recent Meetings

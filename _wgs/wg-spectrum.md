@@ -6,7 +6,7 @@ name: wg-spectrum.md
 editlink:  
 index: 2
 img: /images/signal-png1.png
-chairman: Dr. Punit Rathod (Qualcomm)
+chairman: Dr. Punit Rathod (Qualcomm), Diwakar Sharma (Samsung)
 permalink: /:title
 ---
 
@@ -29,8 +29,7 @@ implementation at national level. (E.g mmwave implementation at national level)
 
 ## Leadership 
 - Co-Chairs : [Dr. Punit Rathod](https://www.linkedin.com/in/punitrathod/), Qualcomm
-- Co-Chairs : [Dr. Sendil Kumar](https://www.linkedin.com/in/skdevar/), Ericsson
-
+- Co-Chairs : [Mr. Diwakar Sharma],(https://www.linkedin.com/in/diwakar-sharma-aaa7712/), Samsung
 --------------------
  
 ## Recent Meetings

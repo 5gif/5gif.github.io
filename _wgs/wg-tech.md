@@ -6,7 +6,7 @@ name: wg.tech.md
 editlink: https://github.com/5gif/5gif.github.io/edit/main/events/6g_event.html
 index: 1
 img: /images/services/5g.png
-chairman: Srinivasan Selvaganapathy (Nokia)
+chairman: Srinivasan Selvaganapathy (Nokia), Akshay Aggarwal (Mediatek)
 permalink: /:title
 ---
 
@@ -35,6 +35,7 @@ certification aspects
 
 ## Leadership 
 - Chair : [Srinivasan Selvaganapathy](https://www.linkedin.com/in/srinivasan-selvaganapathy-182aa535/), Nokia
+- Chair : [Akshay Agarwal](https://www.linkedin.com/in/akshayaggarwal08/), Mediatek
 
 --------------------
  

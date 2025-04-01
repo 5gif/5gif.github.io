@@ -6,7 +6,7 @@ name: industry.md
 editlink:  
 index: 3
 img: /images/cogs-png.png
-chairman : Ashwani Kumar, Huawei
+chairman : Ashwani Kumar (Nokia), Ankita Tyagi (Huawei)
 permalink: /:title
 ---
  
@@ -30,7 +30,9 @@ National bodies like TEC, WPC and other Govt. bodies.
 
 
 ## Leadership 
-- Chair : [Ashwani Kumar](https://www.linkedin.com/in/ashwani-kumar-9295399/), Huawei
+- Co-Chair : [Ashwani Kumar](https://www.linkedin.com/in/ashwani-kumar-9295399/), Nokia
+- Co-Chair : [Ankita Tyagi](https://www.linkedin.com/in/ankita-tyagi-b07759345/), Huawei
+
 
 --------------------
  
